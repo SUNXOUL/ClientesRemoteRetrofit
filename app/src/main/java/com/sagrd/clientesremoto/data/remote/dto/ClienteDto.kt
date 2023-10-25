@@ -1,19 +1,20 @@
 package com.sagrd.clientesremoto.data.remote.dto
 
-import android.media.Image
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "Clientes")
 data class ClienteDto(
     @PrimaryKey
-    val clienteId: Int? = null,
-    var nombres: String = "",
+    val clientId: Int? = null,
+    var name: String = "",
     var image: String = "",
+    var telephone: String = "",
+    var cellphone: String = "",
     var email: String = "",
-    var telefono: String = "",
-    var celular: String = "",
-    var fechaNacimiento: String = "",
     var direccion: String = "",
-    var ocupacionId : Int? = null
+    var birthDate: String = "",
+    var ocupationId : Int? = null
 )

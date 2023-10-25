@@ -138,6 +138,7 @@ fun OccupationForm(
             Button(onClick = {
                 if(!ocupacionViewModel.nameError) {
                     keyboardController?.hide()
+                    ocupacionViewModel.save()
                 }
             }, modifier = Modifier
                 .fillMaxWidth()) {

@@ -47,7 +47,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.sagrd.clientesremoto.data.remote.dto.ClienteDto
 import com.sagrd.clientesremoto.ui.ocupation.OcupacionViewModel
 import com.sagrd.clientesremoto.util.Nav.AppScreens
 import kotlinx.coroutines.flow.collectLatest
@@ -129,7 +128,10 @@ fun ClientesConsult(
                 {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                         IconButton(onClick = {
-                            clienteViewModel.setMessageShown()
+                            if (cliente.clientId!=null){
+                                clienteViewModel.delete(cliente.clientId)
+                                clienteViewModel.setMessageShown()
+                            }
                         }) {
                             Icon(imageVector = Icons.Filled.Delete, contentDescription ="" )
                         }
@@ -144,7 +146,7 @@ fun ClientesConsult(
                                 image = Uri.parse(cliente.image),
                                 Description = "Profile Photo"
                             )
-                            Text(text = "${cliente.nombres}")
+                            Text(text = "${cliente.name}")
                         }
                         Spacer(modifier = Modifier.height(15.dp))
                         Divider()
@@ -161,12 +163,12 @@ fun ClientesConsult(
                             }
                             Column {
                                 Text(text = """
-                            :  ${cliente.telefono}
-                            :  ${cliente.celular}
+                            :  ${cliente.telephone}
+                            :  ${cliente.cellphone}
                             :  ${cliente.email}
                             :  ${cliente.direccion}
-                            :  ${cliente.fechaNacimiento}
-                            :  ${ocupaciones.singleOrNull(){ ocupation-> ocupation.ocupacionId==cliente.ocupacionId}?.nombre}    
+                            :  ${cliente.birthDate}
+                            :  ${ocupaciones.singleOrNull(){ ocupation-> ocupation.ocupationId==cliente.ocupationId}?.name}    
                     """.trimIndent(),modifier = Modifier.padding(10.dp))
                             }
                         }

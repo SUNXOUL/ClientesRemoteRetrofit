@@ -9,6 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sagrd.clientesremoto.data.remote.dto.ClienteDto
+import com.sagrd.clientesremoto.data.remote.dto.OcupacionDto
 import com.sagrd.clientesremoto.data.repository.ClienteRepository
 import com.sagrd.clientesremoto.data.repository.OcupacionRepository
 import com.sagrd.clientesremoto.util.ClienteListState
@@ -78,7 +80,7 @@ class ClienteViewModel @Inject constructor(
     }
     fun onOcupacionChanged(value : Int?){
         ocupacionId=value
-        ocupacionIdError = value != null
+        ocupacionIdError = value == null
     }
     private var _state = mutableStateOf(ClienteListState())
     val state: State<ClienteListState> = _state
@@ -107,6 +109,32 @@ class ClienteViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun save(){
+        viewModelScope.launch {
+            if (!nombresError and !celularError and !fechaNacimientoError and !emailError and !telefonoError and !fechaNacimientoError and !direccionError and !ocupacionIdError){
+                clienteRepository.postCliente(ClienteDto(clientId = 0 ,name = nombres, image = image.toString(), email = email, telephone = telefono, cellphone = celular, birthDate = fechaNacimiento, direccion = direccion, ocupationId = ocupacionId))
+                clear()
+            }
+        }
+    }
+    fun delete(id :Int){
+        viewModelScope.launch {
+            if(id!=0){
+                clienteRepository.deleteCliente(id)
+            }
+        }
+    }
+    fun clear() {
+        nombres = ""
+        telefono=""
+        celular=""
+        email=""
+        direccion=""
+        fechaNacimiento=""
+        ocupacionId=0
+        image=Uri.EMPTY
     }
 
 }

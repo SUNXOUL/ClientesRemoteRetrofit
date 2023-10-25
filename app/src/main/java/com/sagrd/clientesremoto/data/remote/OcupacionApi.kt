@@ -11,7 +11,7 @@ import retrofit2.http.Path
 interface OcupacionApi {
 
     @GET("/api/Ocupation")
-    suspend fun getOCupaciones():Response<Resource<List<OcupacionDto>>>
+    suspend fun getOCupaciones():List<OcupacionDto>
 
     @GET("/api/Ocupation/{OcupacionId}")
     suspend fun getOcupacionById(@Path("OcupacionId") OcupacionId: String): Response<OcupacionDto>

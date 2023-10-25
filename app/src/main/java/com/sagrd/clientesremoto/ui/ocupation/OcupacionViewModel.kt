@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sagrd.clientesremoto.data.remote.dto.OcupacionDto
 import com.sagrd.clientesremoto.data.repository.OcupacionRepository
 import com.sagrd.clientesremoto.util.OcupacionListState
 import com.sagrd.clientesremoto.util.Resource
@@ -63,4 +64,15 @@ class OcupacionViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun save(){
+        viewModelScope.launch {
+            if (!nameError){
+                ocupacionRepository.postOcupacion(OcupacionDto(ocupationId = 0,name = name))
+                clear()
+            }
+        }
+    }
+    fun clear(){
+        name = ""
+    }
 }

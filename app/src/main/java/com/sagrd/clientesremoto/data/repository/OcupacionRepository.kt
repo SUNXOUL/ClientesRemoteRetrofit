@@ -4,6 +4,7 @@ import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
 import com.sagrd.clientesremoto.data.remote.OcupacionApi
+import com.sagrd.clientesremoto.data.remote.dto.ClienteDto
 import com.sagrd.clientesremoto.data.remote.dto.OcupacionDto
 import com.sagrd.clientesremoto.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,7 @@ class OcupacionRepository @Inject constructor(
         try {
             emit(Resource.Loading())
 
-            val ocupaciones = api.getOCupaciones().body()?.data
+            val ocupaciones = api.getOCupaciones()
 
             emit(Resource.Success(ocupaciones))
         } catch (e: HttpException) {
@@ -29,5 +30,12 @@ class OcupacionRepository @Inject constructor(
 
             emit(Resource.Error(e.message ?: "verificar tu conexion a internet"))
         }
+    }
+    suspend fun postOcupacion(ocupacion : OcupacionDto) : OcupacionDto?{
+        val response = api.postOcupacion(ocupacion)
+        if (response.isSuccessful) {
+            response.body()
+        }
+        return ocupacion
     }
 }

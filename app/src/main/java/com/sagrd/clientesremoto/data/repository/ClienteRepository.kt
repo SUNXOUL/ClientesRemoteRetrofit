@@ -8,6 +8,7 @@ import com.sagrd.clientesremoto.data.remote.dto.ClienteDto
 import com.sagrd.clientesremoto.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class ClienteRepository @Inject constructor(
         try {
             emit(Resource.Loading())
 
-            val clients = api.getClientes().body()?.data
+            val clients = api.getClientes()
 
             emit(Resource.Success(clients))
         } catch (e: HttpException) {
@@ -29,5 +30,18 @@ class ClienteRepository @Inject constructor(
 
             emit(Resource.Error(e.message ?: "verificar tu conexion a internet"))
         }
+    }
+
+    suspend fun postCliente(cliente : ClienteDto) : ClienteDto?{
+                val response = api.postCliente(cliente)
+                if (response.isSuccessful) {
+                    response.body()
+                }
+            return cliente
+    }
+
+
+    suspend fun deleteCliente(id: Int) : ClienteDto? {
+        return api.deleteCliente(id).body()
     }
 }

@@ -17,9 +17,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Image
@@ -96,7 +99,11 @@ fun ClientesFormScreen(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Agregar Persona") },
+                actions={ IconButton(onClick = { viewModel.clear() }) {
+                    Icon(imageVector = Icons.Filled.CleaningServices, contentDescription ="Clear" )
+                }},
                 modifier = Modifier.shadow(16.dp),
+
                 colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 navigationIcon = {
                     IconButton(onClick = { navController.navigate(route = AppScreens.ConsultScreen.route) }) {
@@ -104,7 +111,9 @@ fun ClientesFormScreen(
                     }
                 }
             )
+
         },
+
         content = {
             ClientesForm(context=context,navController=navController,clienteviewModel = viewModel)
         }
@@ -146,7 +155,8 @@ fun ClientesForm(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 60.dp, bottom = 40.dp),
+                .padding(top = 60.dp, bottom = 40.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
@@ -224,9 +234,9 @@ fun ClientesForm(
                         .width(with(LocalDensity.current){mTextFieldSize.width.toDp()})
                 ) {
                     ocupaciones.forEach { ocupation ->
-                        DropdownMenuItem(text = { Text(text = ocupation.nombre)}, onClick = {
-                            clienteviewModel.onOcupacionChanged(ocupation.ocupacionId)
-                            selectedText=ocupation.nombre
+                        DropdownMenuItem(text = { Text(text = ocupation.name)}, onClick = {
+                            clienteviewModel.onOcupacionChanged(ocupation.ocupationId)
+                            selectedText=ocupation.name
                             expanded = !expanded
                         })
                     }
@@ -256,6 +266,7 @@ fun ClientesForm(
                 keyboardController?.hide()
 
                     clienteviewModel.setMessageShown()
+                    clienteviewModel.save()
                     selectedText=""
 
             }, modifier = Modifier
