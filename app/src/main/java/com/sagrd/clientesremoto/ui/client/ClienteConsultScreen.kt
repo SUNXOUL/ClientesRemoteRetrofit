@@ -126,16 +126,6 @@ fun ClientesConsult(
             ) {
                 Box()
                 {
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                        IconButton(onClick = {
-                            if (cliente.clientId!=null){
-                                clienteViewModel.delete(cliente.clientId)
-                                clienteViewModel.setMessageShown()
-                            }
-                        }) {
-                            Icon(imageVector = Icons.Filled.Delete, contentDescription ="" )
-                        }
-                    }
                     Column {
                         Column (horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier.fillMaxWidth())
                         {
